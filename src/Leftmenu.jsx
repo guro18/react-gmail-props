@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 function LeftMenu({ currentTab, setCurrentTab, hideRead, setHideRead, unreadEmails, starredEmails }) {
     return (
     <nav className="left-menu">

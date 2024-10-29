@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 //Email component
 function Email({ email, toggleRead, toggleStar }) {
     return (
