@@ -1,13 +1,13 @@
 /* eslint-disable react/prop-types */
-//Email component
-function Email({ email, toggleRead, toggleStar }) {
+function Email({ email, toggleRead, toggleStar, onClick }) {
     return (
-      <li className={`email ${email.read ? 'read' : 'unread'}`}>
+      <li className={`email ${email.read ? 'read' : 'unread'}`} onClick={onClick}>
         <div className="select">
           <input
             className="select-checkbox"
             type="checkbox"
             checked={email.read}
+            onClick={(e) => e.stopPropagation()}
             onChange={() => toggleRead(email)}
           />
         </div>
@@ -16,6 +16,7 @@ function Email({ email, toggleRead, toggleStar }) {
             className="star-checkbox"
             type="checkbox"
             checked={email.starred}
+            onClick={(e) => e.stopPropagation()}
             onChange={() => toggleStar(email)}
           />
         </div>

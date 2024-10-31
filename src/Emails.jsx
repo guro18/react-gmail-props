@@ -1,16 +1,23 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-//import the individual email component
-import Email from './Email'
+import Email from './Email';
 
-//emails component
-function Emails({ emails, filteredEmails, toggleRead, toggleStar }) {
+function Emails({ 
+  filteredEmails, 
+  toggleRead, 
+  toggleStar, 
+  setSelectedEmail }) {
     return (
       <main className="emails">
         <ul>
-          {/* Render individual email items */}
           {filteredEmails.map((email, index) => (
-            <Email key={index} email={email} toggleRead={toggleRead} toggleStar={toggleStar} />
+            <Email 
+              key={index} 
+              email={email} 
+              toggleRead={toggleRead} 
+              toggleStar={toggleStar} 
+              onClick={() => {setSelectedEmail(email);}}
+            />
           ))}
         </ul>
       </main>

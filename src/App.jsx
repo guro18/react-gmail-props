@@ -1,25 +1,22 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import initialEmails from './data/emails';
+import './styles/App.css';
+import Header from './Header';
+import LeftMenu from './Leftmenu';
+import Emails from './Emails';
+import EmailDisplay from './EmailDisplay';
 
-import initialEmails from './data/emails'
-
-import './styles/App.css'
-
-//import components
-import Header from './Header'
-import LeftMenu from './LeftMenu'
-import Emails from './Emails'
-
-const getReadEmails = emails => emails.filter(email => !email.read)
-
-const getStarredEmails = emails => emails.filter(email => email.starred)
+const getReadEmails = emails => emails.filter(email => !email.read);
+const getStarredEmails = emails => emails.filter(email => email.starred);
 
 function App() {
-  const [emails, setEmails] = useState(initialEmails)
-  const [hideRead, setHideRead] = useState(false)
-  const [currentTab, setCurrentTab] = useState('inbox')
+  const [emails, setEmails] = useState(initialEmails);
+  const [hideRead, setHideRead] = useState(false);
+  const [currentTab, setCurrentTab] = useState('inbox');
+  const [selectedEmail, setSelectedEmail] = useState(null);
 
-  const unreadEmails = emails.filter(email => !email.read)
-  const starredEmails = emails.filter(email => email.starred)
+  const unreadEmails = emails.filter(email => !email.read);
+  const starredEmails = emails.filter(email => email.starred);
 
   const toggleStar = targetEmail => {
     const updatedEmails = emails =>
@@ -29,7 +26,7 @@ function App() {
           : email
       )
     setEmails(updatedEmails)
-  }
+  };
 
   const toggleRead = targetEmail => {
     const updatedEmails = emails =>
@@ -37,21 +34,17 @@ function App() {
         email.id === targetEmail.id ? { ...email, read: !email.read } : email
       )
     setEmails(updatedEmails)
-  }
+  };
 
-  let filteredEmails = emails
+  let filteredEmails = emails;
 
   if (hideRead) filteredEmails = getReadEmails(filteredEmails)
-
   if (currentTab === 'starred')
     filteredEmails = getStarredEmails(filteredEmails)
 
-  //render all components, and pass through relevant data
   return (
     <div className="app">
-      {/* header */}
       <Header/>
-      {/* leftmenu */}
       <LeftMenu
       currentTab={currentTab}
       setCurrentTab={setCurrentTab}
@@ -60,15 +53,23 @@ function App() {
       unreadEmails={unreadEmails}
       starredEmails={starredEmails}
       />
-      {/* emails */}
+
+      {selectedEmail ? (
+        <EmailDisplay 
+        selectedEmail={selectedEmail}
+        setSelectedEmail={setSelectedEmail}
+        />) :
+      (
       <Emails
-      email = {emails}
       filteredEmails={filteredEmails}
       toggleRead={toggleRead}
       toggleStar={toggleStar}
+      selectedEmail={selectedEmail}
+      setSelectedEmail={setSelectedEmail}
       />
+      )}
     </div>
   )
 }
 
-export default App
+export default App;
