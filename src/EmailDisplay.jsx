@@ -13,4 +13,3 @@ function EmailDisplay({ selectedEmail, setSelectedEmail }) {
   }
 
   export default EmailDisplay;
-  

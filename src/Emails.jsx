@@ -7,6 +7,7 @@ function Emails({
   toggleRead, 
   toggleStar, 
   setSelectedEmail }) {
+    
     return (
       <main className="emails">
         <ul>

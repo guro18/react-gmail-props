@@ -5,6 +5,7 @@ import Header from './Header';
 import LeftMenu from './Leftmenu';
 import Emails from './Emails';
 import EmailDisplay from './EmailDisplay';
+import { noXssOrSql } from './Validation';
 
 const getReadEmails = emails => emails.filter(email => !email.read);
 const getStarredEmails = emails => emails.filter(email => email.starred);
@@ -14,7 +15,7 @@ function App() {
   const [hideRead, setHideRead] = useState(false);
   const [currentTab, setCurrentTab] = useState('inbox');
   const [selectedEmail, setSelectedEmail] = useState(null);
-
+  const [searchFilteredEmails, setSearchFilteredEmails] = useState(null);
   const unreadEmails = emails.filter(email => !email.read);
   const starredEmails = emails.filter(email => email.starred);
 
@@ -33,18 +34,41 @@ function App() {
       emails.map(email =>
         email.id === targetEmail.id ? { ...email, read: !email.read } : email
       )
-    setEmails(updatedEmails)
+    setEmails(updatedEmails);
   };
 
-  let filteredEmails = emails;
+  const searchEmail = (input) => {
+    if (input === '') {
+      setSearchFilteredEmails(null);
+    } else {
+      const searchResults = emails.filter((email) =>
+        email.title.toLowerCase().includes(input.toLowerCase())
+      );
+      setSearchFilteredEmails(searchResults);
+    }
+  };
 
-  if (hideRead) filteredEmails = getReadEmails(filteredEmails)
+  const handleSearch = (e) => {
+    const inputValue = e.target.value;
+    if (!noXssOrSql(inputValue)) { 
+      searchEmail(inputValue);
+    } else {
+      console.warn("Potential harmful code detected in search input.");
+    }
+  };
+
+  let filteredEmails = searchFilteredEmails || emails;
+  if (hideRead) filteredEmails = getReadEmails(filteredEmails);
   if (currentTab === 'starred')
-    filteredEmails = getStarredEmails(filteredEmails)
+    filteredEmails = getStarredEmails(filteredEmails);
 
   return (
     <div className="app">
-      <Header/>
+      <Header 
+      searchEmail={searchEmail} 
+      handleSearch={handleSearch}
+      />
+
       <LeftMenu
       currentTab={currentTab}
       setCurrentTab={setCurrentTab}

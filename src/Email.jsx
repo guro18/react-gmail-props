@@ -1,5 +1,9 @@
 /* eslint-disable react/prop-types */
-function Email({ email, toggleRead, toggleStar, onClick }) {
+function Email({ email, 
+  toggleRead, 
+  toggleStar, 
+  onClick }) {
+    
     return (
       <li className={`email ${email.read ? 'read' : 'unread'}`} onClick={onClick}>
         <div className="select">
